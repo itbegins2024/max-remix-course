@@ -11,7 +11,8 @@ import {
 // import "./tailwind.css";
 
 import sharedStyles from "~/styles/shared.css?url";
-import Error from "./components/util/Error";
+import ErrorPage from "./components/util/Error";
+
 
 export function Layout({ title, children }) {
   return (
@@ -43,7 +44,7 @@ export function ErrorBoundary() {
       {isRouteErrorResponse(error) ? (
         <Layout title={error.status}>
           <main>
-            <Error title={error.status}>
+            <ErrorPage title={error.status}>
               <h1>
                 {error.status} {error.statusText}
               </h1>
@@ -54,7 +55,7 @@ export function ErrorBoundary() {
               <p>
                 Back to <Link to="/">safety</Link>.
               </p>
-            </Error>
+            </ErrorPage>
           </main>
         </Layout>
       ) : error instanceof Error ? (

@@ -74,14 +74,20 @@ export default function ExpensesLayout() {
 // because the add button is in the component!
 // export async function loader(params) {
 //   const expenses = await getExpenses();
-//   if(!expenses || expenses.length === 0){
-//     throw json(
-//       {message: 'Could not find any expense.'},
-//       {status: 404, statusText: 'No expenses found'}
-//     ) 
+  // if(!expenses || expenses.length === 0){
+  //   throw json(
+  //     {message: 'Could not find any expense.'},
+  //     {status: 404, statusText: 'No expenses found'}
+  //   ) 
 //   }
 //   return expenses;
 // }
+
+// ALTERNATIVELY ... 
+// configure a catch boundary right her closer to the issue
+// this would generate the error on the page withour eclipsing the 
+// main menu. But this is only marginally better since the add 
+// button is still prevented from being rendering
 
 // simplify above code ...
 // in order to speed up rendering, 
