@@ -58,8 +58,8 @@ export async function updateExpense(id, expenseData) {
 export async function deleteExpense(id) {
   try {
     await prisma.expense.delete({
-      where: { id: 'abc' }, // simulate non-existent error
-      // where: { id },
+      // where: { id: 'abc' }, // simulate non-existent error
+      where: { id },
     });
   } catch (error) {
     console.log("delete error: " + error);

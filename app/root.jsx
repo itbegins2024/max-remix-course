@@ -40,7 +40,7 @@ export function ErrorBoundary() {
   return (
     // error with status, status.text and message 
     // : no status, no status text  : nothing, unknown
-    <div>
+    <>
       {isRouteErrorResponse(error) ? (
         <Layout title={error.status}>
           <main>
@@ -70,7 +70,7 @@ export function ErrorBoundary() {
           <h1>Unknown Error</h1>
         </Layout>
       )}
-    </div>
+    </>
   );
 }
 

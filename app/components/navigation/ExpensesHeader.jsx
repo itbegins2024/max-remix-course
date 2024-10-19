@@ -14,7 +14,7 @@ function ExpensesHeader() {
             </NavLink>
           </li>
           <li>
-            <NavLink to="/expenses/analysis">Analyze Expenses</NavLink>
+            <NavLink to="/analysis">Analyze Expenses</NavLink>
           </li>
         </ul>
       </nav>

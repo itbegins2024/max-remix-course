@@ -25,7 +25,7 @@ import { getExpenses } from "~/data/expenses.server";
 export default function ExpensesLayout() {
   // data returned by useLoaderData() will be serislised by remix
   const expenses = useLoaderData(); // can be used in any component route or otherwise
-  console.log("expenses: " + expenses);
+  console.log("expenses in Expenses: " + JSON.stringify(expenses));
 
   // console.log("date: " + new Date(expenses[0].date).get); // not working
   console.log("RENDERING EXPENSES LAYOUT ");
@@ -67,11 +67,9 @@ export default function ExpensesLayout() {
 // remix will call loader if a get request is made in the code
 
 // when there are no expenses it is better to handle it 
-// in the component. If thrown as error here, 
-// trigger a catch boundary, but ...
-// it will take over the screen making adding expenses impossible 
-// adding a catch boundary here will only marginally solve this
-// because the add button is in the component!
+// in the component to keep it functional.  
+// If thrown as error here, and trigger a root catch boundary,
+// that will eclipse the whole page include main menu!
 // export async function loader(params) {
 //   const expenses = await getExpenses();
   // if(!expenses || expenses.length === 0){
@@ -85,9 +83,12 @@ export default function ExpensesLayout() {
 
 // ALTERNATIVELY ... 
 // configure a catch boundary right her closer to the issue
-// this would generate the error on the page withour eclipsing the 
-// main menu. But this is only marginally better since the add 
-// button is still prevented from being rendering
+// this would generate the error on the page without eclipsing the 
+// main menu, but will still dissapear the Add Expense button
+
+// Best approach ...
+// handle empty expense list inside component
+// checking if list is empty
 
 // simplify above code ...
 // in order to speed up rendering, 
