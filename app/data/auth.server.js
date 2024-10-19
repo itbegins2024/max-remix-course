@@ -31,7 +31,7 @@ async function createUserSession(userId, redirectPath) {
         // dash in key requires it to be in quote to be valid JS
       "Set-Cookie": await sessionStorage.commitSession(session),
     //   "Set-Cookie": await commitSession(session),
-    },
+    }
   });
 }
 
