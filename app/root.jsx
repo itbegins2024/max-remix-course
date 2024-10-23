@@ -13,11 +13,38 @@ import {
 import sharedStyles from "~/styles/shared.css?url";
 import ErrorPage from "./components/util/Error";
 
+// export const meta = () => ({
+//   charSet: "utf-8",
+//   title: "New Remix App",
+//   viewport: "width=device-width,initial-scale=1",
+// });
+// export function meta() {
+//   return [
+//     {
+//       title: "All Notes",
+//       description: "Manage all your notes",
+//     },
+//   ];
+// }
+export const meta = () => {
+  return [
+    { title: "Very cool app | Remix" },
+    {
+      property: "og:title",
+      content: "Very cool app",
+    },
+    {
+      name: "description",
+      content: "This app is the best",
+    },
+  ];
+};
 
 export function Layout({ title, children }) {
   return (
     <html lang="en">
       <head>
+        {title && <title>{title}</title>}
         <meta charSet="utf-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <Meta />
@@ -38,7 +65,7 @@ export function ErrorBoundary() {
   const error = useRouteError();
 
   return (
-    // error with status, status.text and message 
+    // error with status, status.text and message
     // : no status, no status text  : nothing, unknown
     <>
       {isRouteErrorResponse(error) ? (

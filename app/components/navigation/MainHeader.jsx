@@ -1,9 +1,11 @@
-import { Link, NavLink } from '@remix-run/react';
-import Logo from '~/components/util/Logo';
+import { Form, Link, NavLink, useLoaderData } from "@remix-run/react";
+import Logo from "~/components/util/Logo";
 
-// NavLink differs from Link by providing Active state on the link 
-// great for "navbar" implementation 
+// NavLink differs from Link by providing Active state on the link
+// great for "navbar" implementation
 function MainHeader() {
+  const userId = useLoaderData();
+
   return (
     <header id="main-header">
       <Logo />
@@ -20,9 +22,16 @@ function MainHeader() {
       <nav id="cta-nav">
         <ul>
           <li>
-            <Link to="/auth" className="cta">
-              Login
-            </Link>
+            {userId && (
+              <Form method='post' action="/logout" id="logout-form">
+                <button className="cta-alt">logout</button>
+              </Form>
+            )}
+            {!userId && (
+              <Link to="/auth" className="cta">
+                Login
+              </Link>
+            )}
           </li>
         </ul>
       </nav>

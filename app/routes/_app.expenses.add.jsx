@@ -5,6 +5,7 @@ import ExpenseForm from "~/components/expenses/ExpenseForm";
 import Modal from "~/components/util/Modal";
 import { addExpense } from "~/data/expenses.server";
 import { validateExpenseInput } from "~/data/validation.server";
+import { requireUserSession } from "~/data/auth.server";
 
 export default function AddExpensesPage() {
   const navigate = useNavigate();
@@ -29,20 +30,22 @@ export default function AddExpensesPage() {
 // data being a remix object that holds data from form
 
 export async function action({ request }) {
+  const userId = await requireUserSession(request);
+
   const formData = await request.formData();
   const expenseData = Object.fromEntries(formData);
   console.log("Add Expense action: " + JSON.stringify(expenseData), JSON.stringify(formData));
 
   try {
     validateExpenseInput(expenseData);
-  } catch (error) {
-    return error;  
+  } catch (error) { 
     // does not redirect to another page, 
     // but error data can be accessed by ExpenseForm
     // via useActionData()
+    return error; 
   }
 
-  await addExpense(expenseData);
+  await addExpense(expenseData, userId);
 
   return redirect("/expenses");
 }

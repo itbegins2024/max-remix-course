@@ -9,6 +9,7 @@ import {
 } from "@remix-run/react";
 import { getExpenses } from "~/data/expenses.server";
 import ErrorPage from "~/components/util/Error";
+import { requireUserSession } from "~/data/auth.server";
 
 // const DUMMY_EXPENSES = [
 //   {
@@ -44,9 +45,13 @@ export default function ExpensesAnalysisPage() {
 
 // data loaded in expenses r'oute is not available here,
 // since this is a sibling route, not a child
-export async function loader() {
+export async function loader({request}) {
+  const userId = await requireUserSession(request);
+
   console.log("EXPENSES LOADER in Analyse");
-  const expenses = await getExpenses();
+
+  const expenses = await getExpenses(userId);
+
   if (!expenses || expenses.length === 0) {
     throw json({
       message: "Could not load expenses for the requested analysis.",
@@ -54,6 +59,7 @@ export async function loader() {
       statustext: "Expenses not found",
     });
   }
+  
   return expenses;
 }
 

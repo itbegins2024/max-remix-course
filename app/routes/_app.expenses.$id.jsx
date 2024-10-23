@@ -63,3 +63,17 @@ export async function action({ params, request }) {
     return { deletedId: expenseId };  // so we simply send some json
   }
 }
+// data is loader data, parentsData is parent's loader data
+export function meta({params, location, data, parentsData}) {
+
+  console.log("parentsData: " + JSON.stringify(parentsData))
+  console.log("parentsData: " + parentsData)
+
+  return [
+    { title: "Super cool expenses app | Remix" },
+    {
+      name: "description",
+      content: "Manage your expenses with ease",
+    },
+  ];
+}

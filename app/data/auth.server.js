@@ -2,7 +2,6 @@ import { createCookieSessionStorage, redirect } from "@remix-run/node";
 import { prisma } from "./database.server";
 import bcrypt from "bcryptjs";
 
-
 const SESSION_SECRET = process.env.SESSION_SECRET;
 
 // in production, should use https,
@@ -21,18 +20,50 @@ const sessionStorage = createCookieSessionStorage({
 async function createUserSession(userId, redirectPath) {
   const session = await sessionStorage.getSession();
   console.log("createUserSession-userId: " + JSON.stringify(userId));
-  
+
   session.set("userId", userId); // gen cookie associated with user
-  // redirect and also send generated cookie to browser 
+  // redirect and also send generated cookie to browser
   // that requested login/signup
-  
+
   return redirect(redirectPath, {
     headers: {
-        // dash in key requires it to be in quote to be valid JS
+      // dash in key requires it to be in quote to be valid JS
       "Set-Cookie": await sessionStorage.commitSession(session),
-    //   "Set-Cookie": await commitSession(session),
-    }
+      //   "Set-Cookie": await commitSession(session),
+    },
   });
+}
+
+export async function getUserFromSession(request) {
+  const session = await sessionStorage.getSession(
+    request.headers.get("Cookie")
+  );
+  const userId = session.get("userId");
+  if (!userId) {
+    return null;
+  }
+  return userId;
+}
+
+export async function destroyUserSession(request) {
+  const session = await sessionStorage.getSession(
+    request.headers.get("Cookie")
+  );
+
+  return redirect("/", {
+    headers: {
+      "Set-Cookie": await sessionStorage.destroySession(session),
+    },
+  });
+}
+
+export async function requireUserSession(request) {
+  const userId = await getUserFromSession(request);
+  if (!userId) {
+    throw redirect("/auth?mode=login");
+  }
+
+  return userId;
 }
 
 export async function signup({ email, password }) {

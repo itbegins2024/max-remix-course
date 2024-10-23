@@ -49,4 +49,12 @@ export default function Index() {
   );
 }
 
-export function meta() {}
+export function meta() {
+  return [
+    { title: "Super cool expenses app | Remix" },
+    {
+      name: "description",
+      content: "Manage your expenses with ease",
+    },
+  ];
+}

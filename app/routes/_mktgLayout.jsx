@@ -1,6 +1,7 @@
 import { Outlet } from "@remix-run/react";
 import marketingStyles from "~/styles/marketing.css?url";
 import MainHeader from "~/components/navigation/MainHeader";
+import { getUserFromSession } from "~/data/auth.server";
 
 export default function MaketingLayout() {
   return (
@@ -9,6 +10,10 @@ export default function MaketingLayout() {
       <Outlet />;
     </>
   );
+}
+
+export function loader({request}) {
+  return getUserFromSession(request);
 }
 
 export function links() {
