@@ -4,6 +4,7 @@ import { FaPlus, FaDownload } from "react-icons/fa";
 import ExpensesList from "~/components/expenses/ExpensesList";
 import { requireUserSession } from "~/data/auth.server";
 import { getExpenses } from "~/data/expenses.server";
+import { headers } from "./_mktgLayout._index";
 
 // const DUMMY_EXPENSES = [
 //     {
@@ -21,7 +22,12 @@ import { getExpenses } from "~/data/expenses.server";
 //   ];
 
 // worth understanding: ExpensesLayout() component code runs on front end
-// loader code runs on backend
+// loader code runs on backend. 
+
+// also worth understanding, remix renders this component 
+// as HTML in the backend before sending to client. 
+// These are server responses, and they come attached with Headers.
+// We can add custom headers to this ...
 
 export default function ExpensesLayout() {
   // data returned by useLoaderData() will be serislised by remix
@@ -108,12 +114,23 @@ export async function loader({ request }) {
   const userId = await requireUserSession(request);
 
   console.log("EXPENSES LOADER");
-  return getExpenses(userId);
+
+  const expenses = await getExpenses(userId);
+  return json(expenses, {headers: {
+    'Cache-Control': 'max-age=3',
+  }, });
+
+  // alternatively ...
+  // return getExpenses(userId);
 }
 
-// alternatively ...
-// json() is what remix does in the background anyway ...
-// export async function loader() {
-//   const expenses = await getExpenses();
-//   return json(expenses);
-// }
+export function headers({
+  actionHeaders,
+  errorHeaders,
+  loaderHeaders,
+  parentHeaders,
+}) {
+  return {
+    "Cache-Control": loaderHeaders.get("Cache-Control"), // set on _mktgLayout.jsx
+  };
+}

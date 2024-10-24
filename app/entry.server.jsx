@@ -109,6 +109,8 @@ function handleBrowserRequest(
           const stream = createReadableStreamFromReadable(body);
 
           responseHeaders.set("Content-Type", "text/html");
+          // possible to add global headers here e.g. ...
+          // responseHeaders.set('X-My-Header', 'Some value')
 
           resolve(
             new Response(stream, {

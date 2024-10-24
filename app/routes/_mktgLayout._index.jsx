@@ -58,3 +58,14 @@ export function meta() {
     },
   ];
 }
+
+export function headers({
+  actionHeaders,
+  errorHeaders,
+  loaderHeaders,
+  parentHeaders,
+}) {
+  return {
+    "Cache-Control": parentHeaders.get("Cache-Control"), // set on _mktgLayout.jsx
+  };
+}

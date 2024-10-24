@@ -8,10 +8,10 @@ import { validateExpenseInput } from "~/data/validation.server";
 // 1. id does not exist handle in ExpenseForm component
 // 2. empty expense list? hand inside expense expense layout UI
 
-// ordinarily, entering a non-existent id route expenses/xyz 
+// ordinarily, entering a non-existent id route expenses/xyz
 // in the url will invoke the empty add expense form
-// but this situation can be rectified with Error Handling 
-// inside the form 
+// but this situation can be rectified with Error Handling
+// inside the form
 export default function UpdateExpensesPage() {
   const navigate = useNavigate();
 
@@ -56,21 +56,22 @@ export async function action({ params, request }) {
 
     await updateExpense(expenseId, expenseData);
     return redirect("/expenses");
-    
   } else if (request.method === "DELETE") {
     await deleteExpense(expenseId);
     // return redirect('/expenses'); // this redirects to a pade we are already at
-    return { deletedId: expenseId };  // so we simply send some json
+    return { deletedId: expenseId }; // so we simply send some json
   }
 }
 // data is loader data, parentsData is parent's loader data
-export function meta({params, location, data, parentsData}) {
+export function meta({ params, location, data, parentsData }) {
+  console.log("parentsData: " + JSON.stringify(parentsData));
+  console.log("parentsData: " + parentsData);
 
-  console.log("parentsData: " + JSON.stringify(parentsData))
-  console.log("parentsData: " + parentsData)
-
+  const expense = parentsData["routes/_app.expenses"].find(
+    (expense) => expense.id === params.id
+  );
   return [
-    { title: "Super cool expenses app | Remix" },
+    { title: expense.title },
     {
       name: "description",
       content: "Manage your expenses with ease",
