@@ -4,7 +4,6 @@ import { FaPlus, FaDownload } from "react-icons/fa";
 import ExpensesList from "~/components/expenses/ExpensesList";
 import { requireUserSession } from "~/data/auth.server";
 import { getExpenses } from "~/data/expenses.server";
-import { headers } from "./_mktgLayout._index";
 
 // const DUMMY_EXPENSES = [
 //     {
@@ -116,14 +115,18 @@ export async function loader({ request }) {
   console.log("EXPENSES LOADER");
 
   const expenses = await getExpenses(userId);
+  // this is a proper Response to the request
   return json(expenses, {headers: {
     'Cache-Control': 'max-age=3',
   }, });
 
-  // alternatively ...
+  // alternatively just return getExenses
+  // which will return the expense object,
+  // which Remix will wrap in json() Response
   // return getExpenses(userId);
 }
 
+// export for Remix to be aware of this header
 export function headers({
   actionHeaders,
   errorHeaders,

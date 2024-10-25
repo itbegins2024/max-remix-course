@@ -63,18 +63,29 @@ export async function action({ params, request }) {
   }
 }
 // data is loader data, parentsData is parent's loader data
-export function meta({ params, location, data, parentsData }) {
-  console.log("parentsData: " + JSON.stringify(parentsData));
-  console.log("parentsData: " + parentsData);
+// export function meta({ params, location, data, parentsData }) {
+//   console.log("parentsData: " + JSON.stringify(parentsData));
+//   console.log("parentsData: " + parentsData);
 
-  const expense = parentsData["routes/_app.expenses"].find(
+//   const expense = parentsData["routes/_app.expenses"].find(
+//     (expense) => expense.id === params.id
+//   );
+//   return [
+//     { title: expense.title },
+//     {
+//       name: "description",
+//       content: "Manage your expenses with ease",
+//     },
+//   ];
+// }
+
+// updated code
+export function meta({ params, matches }) {
+  const expense = matches.find(match => match.id === 'routes/_app.expenses')?.data.find(
     (expense) => expense.id === params.id
   );
-  return [
-    { title: expense.title },
-    {
-      name: "description",
-      content: "Manage your expenses with ease",
-    },
-  ];
+  return [{
+    title: expense?.title || 'Unknown Expense',
+    description: 'Update expense.',
+  }];
 }
